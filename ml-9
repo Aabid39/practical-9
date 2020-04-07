@@ -1,0 +1,93 @@
+Experiment no. 9
+
+Implementation of K Mean Clustering and Unclustering on Jupyter Notebook using Python.
+
+In [1]:
+import matplotlib.pyplotas plt
+import pandas as pd
+import seaborn as sns
+
+
+In [2]:
+iris = sns.load_dataset('iris')
+labels = iris.species.unique()
+
+In [3]:
+iris.head()
+
+In [4]:
+iris["species"] = pd.Categorical(iris["species"])
+iris["species"] = iris["species"].cat.codes
+iris.head()
+
+
+In [5]:
+X = iris[['sepal_length','sepal_width']].values
+y = iris.species
+
+
+In [6]:
+from sklearn.clusterimport KMeans
+model = KMeans(n_clusters= 3).fit(X)
+centers= model.cluster_centers_
+new_labels= model.labels_
+
+Out[3]:
+sepal_lengthsepal_widthpetal_lengthpetal_width species
+0 5.1 3.5 1.4 0.2 setosa
+1 4.9 3.0 1.4 0.2 setosa
+2 4.7 3.2 1.3 0.2 setosa
+3 4.6 3.1 1.5 0.2 setosa
+4 5.0 3.6 1.4 0.2 setosa
+
+Out[4]:
+sepal_lengthsepal_widthpetal_lengthpetal_width species
+0 5.1 3.5 1.4 0.2 0
+1 4.9 3.0 1.4 0.2 0
+2 4.7 3.2 1.3 0.2 0
+3 4.6 3.1 1.5 0.2 0
+4 5.0 3.6 1.4 0.2 0
+
+In [7]:
+print('Centroids :',centers)
+print('\nLabels :',new_labels)
+
+
+In [8]:
+plt.figure(figsize=(12,8))
+plt.scatter(X[:, 0], X[:, 1],c=y, s=60)
+plt.xlabel('Sepal length', fontsize=18)
+plt.ylabel('Sepal width', fontsize=18)
+plt.title('Unclustered Data',fontsize=18)
+
+
+Centroids : [[6.81276596 3.07446809]
+[5.006 3.428 ]
+[5.77358491 2.69245283]]
+Labels : [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 2 0 2 0 2 0 2 2 2 2 2 2 0 2 2 2 2 2 2 2 2
+0 0 0 0 2 2 2 2 2 2 2 2 0 2 2 2 2 2 2 2 2 2 2 2 2 2 0 2 0 0 0 0 2 0 0 0 0
+0 0 2 2 0 0 0 0 2 0 2 0 2 0 0 2 2 0 0 0 0 0 2 2 0 0 0 2 0 0 0 2 0 0 0 2 0
+0 2]
+
+Out[8]:
+Text(0.5, 1.0, 'Unclustered Data')
+
+In [9]:
+plt.figure(figsize=(12,8))
+plt.scatter(X[:, 0], X[:, 1], c=new_labels,s=60)
+plt.scatter(centers[:, 0], centers[:, 1], c='r', s=400, marker = '*', zorder=10);
+plt.xlabel('Sepal length', fontsize=18)
+plt.ylabel('Sepal width', fontsize=18)
+plt.title('Clustered Data',fontsize=18)
+
+
+
+
+In [10]:
+y_pred= model.predict([[2.3,5.6]])
+print("Result :",labels[y_pred[0]])
+Out[9]:
+Text(0.5, 1.0, 'Clustered Data')
+Result :
